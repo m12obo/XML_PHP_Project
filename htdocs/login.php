@@ -27,6 +27,7 @@
 
       $sql = "SELECT username, password FROM testTable";
       $result = $db->query($sql);
+       echo $result->num_rows;
       if ($result->num_rows > 0) {
        
            while($row = $result->fetch_assoc()) {
