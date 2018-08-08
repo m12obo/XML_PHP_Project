@@ -20,25 +20,25 @@
       $mypassword = mysqli_real_escape_string($db,$_POST['password']);
 	  
       $sql = "SELECT id FROM testTable WHERE username = '" . $myusername . "' and password = '". $mypassword ."'";
-	  
       $result = mysqli_query($db,$sql);
-	  
       $row = mysqli_fetch_array($result,MYSQLI_ASSOC);
-      
-
       $count = mysqli_num_rows($result);
 	  
 
-      // If result matched $myusername and $mypassword, table row must be 1 row
-
-      if($count == 1) {
-         $_SESSION['login_user'] = $myusername;
-         header('location: welcome.php');
-		 exit();
-      }else {
-         $error = "Your Login Name or Password is invalid";
-      }
-   }
+      $sql = "SELECT username, password FROM testTable";
+      $result = $db->query($sql);
+      if ($result->num_rows > 0) {
+       
+           while($row = $result->fetch_assoc()) {
+                if ($row['username'] == $myusername && $row['password'] == $mypassword) {
+                    $_SESSION['login_user'] = $myusername;
+                    header('location: welcome.php');
+		            exit();
+                }
+           }
+           $error = "Your Login Name or Password is invalid";
+        }
+    }
 ?>
 <html>
 
@@ -56,7 +56,7 @@
             font-size:14px;
          }
          .box {
-            border:#666666 solid 1px;
+            border:#666666 solid 2px;
          }
       </style>
 
